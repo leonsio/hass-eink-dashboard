@@ -236,6 +236,24 @@ export const WIDGET_TYPES: Record<string, WidgetTypeMeta> = {
       card_style: DEFAULT_CARD_STYLE,
     },
   },
+  sph_stundenplan: {
+    label: "SPH Stundenplan",
+    description: "Mehrere Schultage untereinander",
+    icon: "mdi:school",
+    defaults: { type: "sph_stundenplan", entity: "", x: 24, y: 0, w: 600, days: 5 },
+  },
+  sph_stundenplan_tag: {
+    label: "SPH Stundenplan Tag",
+    description: "Nur der heutige Stundenplan",
+    icon: "mdi:school-outline",
+    defaults: { type: "sph_stundenplan_tag", entity: "", x: 24, y: 0, w: 600 },
+  },
+  sph_stundenplan_grid: {
+    label: "SPH Stundenplan Grid",
+    description: "Kompletter Stundenplan über die volle Displaybreite",
+    icon: "mdi:view-grid-outline",
+    defaults: { type: "sph_stundenplan_grid", entity: "", x: 0, y: 0, h: 648 },
+  },
 };
 
 // ── ha-form schema builders ──────────────────────────────────────
@@ -1575,6 +1593,22 @@ export const SCHEMAS: Record<
       icon: "mdi:palette",
       schema: [cardStyleSelector(), boldValueSelector()],
     },
+  ],
+  sph_stundenplan: (d) => [
+    identitySection(),
+    { name: "entity", selector: { entity: {} } },
+    { name: "days", default: 5, selector: { number: { min: 1, max: 7, step: 1, mode: "box" } } },
+    ...posXYWH(d),
+  ],
+  sph_stundenplan_tag: (d) => [
+    identitySection(),
+    { name: "entity", selector: { entity: {} } },
+    ...posXYWH(d),
+  ],
+  sph_stundenplan_grid: (d) => [
+    identitySection(),
+    { name: "entity", selector: { entity: {} } },
+    { name: "h", default: 648, selector: { number: { min: 100, max: d.height, step: 8, mode: "box" } } },
   ],
 };
 
